@@ -1,20 +1,21 @@
-local M = setmetatable({}, require("cotton.Collector"))
+local M = setmetatable({}, require("clinic.Collector"))
 local its = require("infra.its")
 local ni = require("infra.ni")
+local strlib = require("infra.strlib")
 
-M.ns = ni.create_namespace("cotton.selene")
+M.ns = ni.create_namespace("clinic.selene")
 
 function M:cmd(outfile) return "selene", { "--no-summary", "--display-style=json", outfile } end
 
----@class cotton.selene.Check
+---@class clinic.selene.Check
 ---@field severity 'Warning'|'Error'
 ---@field code integer
 ---@field message string
 ---@field notes string[]
 ---@field secondary_labels string[]
----@field primary_label {filename: string, span: cotton.selene.Check.PrimaryLabelSpan, message: string}
+---@field primary_label {filename: string, span: clinic.selene.Check.PrimaryLabelSpan, message: string}
 
----@class cotton.selene.Check.PrimaryLabelSpan
+---@class clinic.selene.Check.PrimaryLabelSpan
 ---@field start integer
 ---@field start_line integer
 ---@field start_column integer
@@ -23,11 +24,15 @@ function M:cmd(outfile) return "selene", { "--no-summary", "--display-style=json
 ---@field end_column integer
 
 ---@param plains string[]
----@return cotton.selene.Check[]
+---@return clinic.selene.Check[]
 function M:populate_checks(plains)
-  --selene outputs: 'check\ncheck'
-  assert(#plains > 0)
-  return its(plains):map(vim.json.decode):tolist()
+  --selene outputs: 'check\ncheck\n'
+  assert(#plains == 1)
+
+  return its(strlib.iter_splits(plains[1], "\n")) --
+    :filter(function(chunk) return chunk ~= "" end)
+    :map(vim.json.decode)
+    :tolist()
 end
 
 do
@@ -36,7 +41,7 @@ do
     Error = "ERROR",
   }
 
-  ---@param check cotton.selene.Check
+  ---@param check clinic.selene.Check
   ---@return vim.Diagnostic
   function M:check_to_diagnostic(bufnr, check)
     local severity = assert(severities[check.severity], check.severity)

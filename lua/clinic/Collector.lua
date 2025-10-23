@@ -1,10 +1,10 @@
 local cthulhu = require("cthulhu")
 local its = require("infra.its")
 local iuv = require("infra.iuv")
-local jelly = require("infra.jellyfish")("cotton.collector", "info")
+local jelly = require("infra.jellyfish")("clinic.collector", "info")
 local subprocess = require("infra.subprocess")
 
----@class cotton.Collector
+---@class clinic.Collector
 ---@field ns integer
 local Collector = {}
 do

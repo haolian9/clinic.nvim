@@ -1,13 +1,13 @@
-local M = setmetatable({}, require("cotton.Collector"))
+local M = setmetatable({}, require("clinic.Collector"))
 
 local ni = require("infra.ni")
 
-M.ns = ni.create_namespace("cotton.shellcheck")
+M.ns = ni.create_namespace("clinic.shellcheck")
 
 function M:cmd(outfile) return "shellcheck", { "--format=json", outfile } end
 
 do
-  ---@class cotton.shellcheck.Check
+  ---@class clinic.shellcheck.Check
   ---@field file string
   ---@field line integer
   ---@field endLine integer
@@ -18,7 +18,7 @@ do
   ---@field message string
 
   ---@param plains string[]
-  ---@return cotton.shellcheck.Check[]
+  ---@return clinic.shellcheck.Check[]
   function M:populate_checks(plains)
     --shellcheck outputs: '[check,check]'
     assert(#plains == 1)
@@ -33,7 +33,7 @@ do
     info = "INFO",
   }
 
-  ---@param check cotton.shellcheck.Check
+  ---@param check clinic.shellcheck.Check
   ---@return vim.Diagnostic
   function M:check_to_diagnostic(bufnr, check)
     local lnum = check.line - 1
