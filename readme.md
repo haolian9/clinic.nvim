@@ -1,23 +1,20 @@
-弹棉花
-
-
 an example to integrate external linters into nvim
 
 ## features
-* lint to the current content of buffers, no need to save first
+* lint current content of a buffer, no need to save first
 * utilize vim.diagnostic, rather than flooding qf/loclist directly
 * run multiple linters in parallel by spawning processes
 * no going through lsp protocol, vim.lsp
-* supported filetypes: python, bash, lua
+* supports: ruff, selene, shellcheck
 
 ## status
 * just works
 * feature-complete
-* just an example
+* merely an example
 
 ## prerequisites
 * linux
-* nvim 0.9.*
+* nvim 0.11.*
 * haolian9/infra.nvim
 * haolian9/cthulhu.nvim
 * ruff, shellcheck, selene
@@ -26,6 +23,7 @@ an example to integrate external linters into nvim
 * `:lua require'cotton'.lint()`
 
 ---
+this project used to be called `cotton`, so:
 
 弹棉花啊弹棉花  
 半斤棉弹成八两八哟  
